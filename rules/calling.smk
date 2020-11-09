@@ -29,6 +29,9 @@ rule call_variants:
     params:
         extra=get_call_variants_params,
         java_opts=config["params"]["gatk"]["java_opts"],
+    group: "gatkcall"
+    resources: 
+        mem=lambda wildcards, input: len(input.bam) * 15
     wrapper:
         get_wrapper_path("gatk", "haplotypecaller")
 
@@ -43,6 +46,7 @@ rule combine_calls:
         java_opts=config["params"]["gatk"]["java_opts"],
     log:
         "logs/gatk/combinegvcfs.{contig}.log"
+    group: "gatkcall"
     wrapper:
         get_wrapper_path("gatk", "combinegvcfs")
 
@@ -58,6 +62,7 @@ rule genotype_variants:
         java_opts=config["params"]["gatk"]["java_opts"],
     log:
         "logs/gatk/genotypegvcfs.{contig}.log"
+    group: "gatkcall"
     wrapper:
         get_wrapper_path("gatk", "genotypegvcfs")
 
@@ -65,7 +70,9 @@ rule genotype_variants:
 rule merge_variants:
     input:
         ref=get_fai(), # fai is needed to calculate aggregation over contigs below
-        vcfs=lambda w: expand("genotyped/all.{contig}.vcf.gz", contig=get_contigs()),
+        vcfs=lambda w: expand("genotyped/all.{contig}.vcf.gz", contig=get_canon_contigs()),
+	## use this to remove repetitive contigs for dag generation
+	#vcfs=lambda w: expand("genotyped/all.{contig}.vcf.gz", contig="GRCh37"), 
     output:
         vcf="genotyped/all.vcf.gz"
     log:

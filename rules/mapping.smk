@@ -65,20 +65,22 @@ rule recalibrate_base_qualities:
         get_wrapper_path("gatk", "baserecalibrator")
 
 rule remove_decoy:
+    #redirect first samtools command to a temp output file "decoy.bam" 
+    #otherwise it floods the log file with binary stream of decoy reads
     input:
         bam = "recal/{sample}-{unit}.bam",
-        decoy = config["params"]["remove_decoy"]["bed"],
+        canon = config["ref"]["canon_bed"],
     output:
-        temp_out = temp("decoy_rm/{sample}-{unit}.no_decoy_reads.temp.bam"),
-        out_f = "decoy_rm/{sample}-{unit}.no_decoy_reads.bam"
+        out_f = temp("decoy_rm/{sample}-{unit}.no_decoy_reads.bam")
     log:
         "logs/remove_decoys/{sample}-{unit}.log"
     threads: 8
     resources: mem_mb = 10000
+    conda:
+        "../envs/samtools.yaml"
     shell:
         """
-        samtools view {input.bam} -b -h -t {threads} -U {output.temp_out} -L {input.decoy}
-        samtools view -h -t {threads} {output.temp_out} | grep -v hs37d5 | grep -v NC_007605 | samtools view - -hb > {output.out_f}
+        samtools view -t {threads} -h -L {input.canon} {input.bam} | egrep -v "hs37d5|NC_007605" | samtools view -t {threads} - -bh > {output.out_f}
         """
 
 rule samtools_index:
