@@ -5,7 +5,6 @@ log = snakemake.log_fmt_shell(stdout=True, stderr=True)
 prefix = os.path.splitext(snakemake.output.json)[0].split(".")
 sample_prefix = split(os.path.basename(snakemake.input), "-")[0]
 
-
 shell(
     "( ExpansionHunterDenovo profile"
     " --reference {snakemake.params.ref}"

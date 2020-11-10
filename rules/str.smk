@@ -1,10 +1,10 @@
-rule EHdn:
-    input: "mapped/{sample}-{unit}.sorted.bam"
+rule EHdn_profile:
+    input: 
+        "mapped/{sample}-{unit}.sorted.bam"
     output:
         json = "str/EHdn/{sample}-{unit}.str_profile.json",
         motif = "str/EHdn/{sample}-{unit}.locus.tsv",
         locus = "str/EHdn/{sample}-{unit}.motif.tsv",
-        manifest = "str/EHdn/{project}_manifest.txt"
     params:
         ref = config["ref"]["genome"]
     log:
@@ -12,24 +12,30 @@ rule EHdn:
     wrapper:
         get_wrapper_path("EHdn", "profile")   
 
-rule EHdn_combine:
-   input:
-        json = expand("str/EHdn/{sample}-{unit}.json",
-                  sample=wildcards.sample,
-                  unit=units.loc[wildcards.sample].unit)
-        manifest = "str/EHdn/{project}_manifest.txt"
+def get_manifest(wildcards):
+    json = expand("str/EHdn/{sample}-{unit}.str_profile.json", sample=wildcards.sample, unit=units.loc[wildcards.sample].unit)
+    with open("str/EHdn/manifest.txt", "w") as f:
+        for i,j in zip(wildcards.sample, json):
+            f.writelines("{}\tcase\t{}\n".format(i,j))
+
+
+
+rule EHdn_merge:
+    input:
+        #json = expand("str/EHdn/{sample}-{unit}.json",sample=wildcards.sample, unit=units.loc[wildcards.sample].unit),
+        manifest = get_manifest
     output:
-        "str/EHdn/{project}_multisample_profile.json"
+        "str/EHdn/all/{project}_multisample_profile.json"
     params:
         ref = config["ref"]["genome"]
     log:
-        "logs/str/{sample}-{unit}-EHdn.log"
+        "logs/str/{project}-EHdn.log"
     wrapper:
-        get_wrapper_path("EHdn", "profile")   
+        get_wrapper_path("EHdn", "merge")   
 
 rule EH:
     input:
-        reads = "mapped/{sample}-{unit}.sorted.bam"
+        "mapped/{sample}-{unit}.sorted.bam"
     output:
         json = "str/EH/{sample}-{unit}.json",
         vcf = "str/EH/{sample}-{unit}.vcf",

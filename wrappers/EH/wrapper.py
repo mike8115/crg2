@@ -11,7 +11,7 @@ shell(
     "sex={snakemake.params.sex} && "
     "( ExpansionHunter"
     " --reference {snakemake.params.ref}"
-    " --reads {snakemake.input.reads}"
+    " --reads {snakemake.input}"
     " --output-prefix {prefix}"
     " --variant-catalog {catalog}"
     " --sex $sex )"

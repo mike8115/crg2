@@ -14,7 +14,8 @@ rule all:
         "report/sv",
         "qc/multiqc/multiqc.html",
         "plots/depths.svg",
-        "plots/allele-freqs.svg"
+        "plots/allele-freqs.svg",
+##        "str/EHdn/all"
 
 ##### Modules #####
 
