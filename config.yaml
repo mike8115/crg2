@@ -27,10 +27,8 @@ filtering:
   hard:
     # hard filtering as outlined in GATK docs
     # (https://gatkforums.broadinstitute.org/gatk/discussion/2806/howto-apply-hard-filters-to-a-call-set)
-    snvs:
-      "QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0"
-    indels:
-      "QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0"
+    snvs: "QD < 2.0 || FS > 60.0 || MQ < 40.0 || MQRankSum < -12.5 || ReadPosRankSum < -8.0"
+    indels: "QD < 2.0 || FS > 200.0 || ReadPosRankSum < -20.0"
 
 processing:
   remove-duplicates: false
@@ -67,6 +65,8 @@ annotation:
     biomart: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/annotation/BioMaRt.GrCh37.75.ensembl.mim.hgnc.entrez.txt"
     mssng_manta_counts: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/annotation/MSSNG_COUNTS/Canadian_MSSNG_parent_SVs.Manta.counts.txt"
     mssng_lumpy_counts: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/annotation/MSSNG_COUNTS/Canadian_MSSNG_parent_SVs.LUMPY.counts.txt"
+  eh:
+    catalog: "/hpf/largeprojects/ccmbio/arun/C4Rare/Tandem_repeat_disease_loci.hg19.json"
 
 params:
   bwa:

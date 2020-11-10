@@ -5,7 +5,7 @@ log = snakemake.log_fmt_shell(stdout=True, stderr=True)
 prefix = os.path.splitext(snakemake.output.json)[0].split(".")
 
 # must be moved to config
-catalog = "/hpf/largeprojects/ccmbio/arun/C4Rare/Tandem_repeat_disease_loci.hg19.json"
+catalog = config["eh"]["catalog"]
 
 shell(
     "sex={snakemake.params.sex} && "
@@ -17,4 +17,3 @@ shell(
     " --sex $sex )"
     " {log}"
 )
-

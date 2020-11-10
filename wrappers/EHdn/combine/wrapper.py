@@ -6,12 +6,9 @@ prefix = os.path.splitext(snakemake.output.json)[0].split(".")
 
 
 shell(
-    "( ExpansionHunterDenovo profile"
+    "( ExpansionHunterDenovo merge"
     " --reference {snakemake.params.ref}"
-    " --reads {snakemake.input.reads}"
-    " --output-prefix {prefix}"
-    " --min-anchor-mapq 50"
-    " --max-irr-mapq 40 )"
+    " --manifest {manifest}"
+    " --output-prefix {prefix} )"
     " {log}"
 )
-

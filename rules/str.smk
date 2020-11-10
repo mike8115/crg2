@@ -1,16 +1,31 @@
 rule EHdn:
-    input:
-        reads = "mapped/{sample}-{unit}.sorted.bam"
+    input: "mapped/{sample}-{unit}.sorted.bam"
     output:
         json = "str/EHdn/{sample}-{unit}.str_profile.json",
         motif = "str/EHdn/{sample}-{unit}.locus.tsv",
-        locus = "str/EHdn/{sample}-{unit}.motif.tsv"
+        locus = "str/EHdn/{sample}-{unit}.motif.tsv",
+        manifest = "str/EHdn/{project}_manifest.txt"
     params:
         ref = config["ref"]["genome"]
     log:
         "logs/str/{sample}-{unit}-EHdn.log"
     wrapper:
-        get_wrapper_path("EHdn")   
+        get_wrapper_path("EHdn", "profile")   
+
+rule EHdn_combine:
+   input:
+        json = expand("str/EHdn/{sample}-{unit}.json",
+                  sample=wildcards.sample,
+                  unit=units.loc[wildcards.sample].unit)
+        manifest = "str/EHdn/{project}_manifest.txt"
+    output:
+        "str/EHdn/{project}_multisample_profile.json"
+    params:
+        ref = config["ref"]["genome"]
+    log:
+        "logs/str/{sample}-{unit}-EHdn.log"
+    wrapper:
+        get_wrapper_path("EHdn", "profile")   
 
 rule EH:
     input:
