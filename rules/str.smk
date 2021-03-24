@@ -43,7 +43,7 @@ rule EH:
     params:
         ref = config["ref"]["genome"],
         sex = lambda w: "`sh {}/scripts/str_helper.sh mapped/{}-{}.sorted.bam`".format(workflow.basedir, w.sample, w.unit),
-        catalog = config["eh"]["catalog"]
+        catalog = config["annotation"]["eh"]["catalog"]
     log:
         "logs/str/{sample}-{unit}-EH.log"
     wrapper:
@@ -51,15 +51,15 @@ rule EH:
 
 rule EH_report:
     input:
-        json = expand("str/EH/{sample}-{unit}.json",sample=sample=samples.index,unit=units.loc[sample.index].unit)
+        json = get_eh_json()
     output:
         tsv = "str/EH/{project}_EH_str.tsv",
         annot = "str/EH/{project}_EH_str.annot.tsv",
-        xlsx = "str/EH/{project}_EH_v1.1.xlsx";
+        xlsx = "str/EH/{project}_EH_v1.1.xlsx"
     log:
         "logs/str/{project}-eh-report.log"
     params:
-        trf = config["eh"]["trf"]
+        trf = config["annotation"]["eh"]["trf"]
     conda:
         "../envs/eh-report.yaml"
     shell:
