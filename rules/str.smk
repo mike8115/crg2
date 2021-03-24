@@ -66,7 +66,7 @@ rule EH_report:
         '''
         python ../scripts/generate_EH_genotype_table.generic.py str/EH > {output}
         python ../scripts/add_gene+threshold_to_EH_column_headings2.py {output.tsv} {params.trf} > {output.annot}
-        python ../scripts/eh_sample_report.py {output.trf} {output.xlsx}
+        python ../scripts/eh_sample_report.py {output.annot} {output.xlsx}
 
         '''
 
