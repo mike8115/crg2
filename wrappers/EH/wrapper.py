@@ -4,8 +4,6 @@ import os
 log = snakemake.log_fmt_shell(stdout=True, stderr=True)
 prefix = os.path.splitext(snakemake.output.json)[0].split(".")
 
-# must be moved to config
-catalog = config["eh"]["catalog"]
 
 shell(
     "sex={snakemake.params.sex} && "
@@ -13,7 +11,7 @@ shell(
     " --reference {snakemake.params.ref}"
     " --reads {snakemake.input}"
     " --output-prefix {prefix}"
-    " --variant-catalog {catalog}"
+    " --variant-catalog {snakemake.params.catalog}"
     " --sex $sex )"
     " {log}"
 )
