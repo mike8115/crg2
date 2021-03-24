@@ -5,7 +5,7 @@ run:
   ped: "" # leave this string empty if there is no ped
   panel: "" # leave this string empty if there is no panel
   hpo: "" # leave this string empty is there are no hpo terms
-  flank: "100000"
+  flank: 100000
 
 tools:
   svscore_script: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/crg2-non-conda-tools/SVScore/svscore.pl"
@@ -41,8 +41,8 @@ processing:
 
 annotation:
   vcfanno:
-    conf: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/pipelines/crg2/vcfanno/crg.vcfanno.conf"
-    lua_script: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/pipelines/crg2/vcfanno/crg.vcfanno.lua"
+    conf: "~/crg/crg.vcfanno.conf" 
+    lua_script: "~/crg/crg.vcfanno.lua"
     base_path: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/annotation/vcfanno"
   vep:
     dir: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/snakemake/6ea37454/share/ensembl-vep-101.0-0/"
@@ -58,7 +58,7 @@ annotation:
   svreport:
     hgmd: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/annotation/HGMD_2018/hgmd_pro.db"
     protein_coding_genes: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/annotation/grch37.p13.ensembl.sorted.protein.coding.genes.bed"
-    exon_bed: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/annotation/grch37.p13.ensembl.protein.coding.genes.exons.fixed.sorted.bed"
+    exon_bed: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/annotation/exons/hg19_UCSC_exons_canonical.bed"
     exac: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/annotation/ExAC/fordist_cleaned_nonpsych_z_pli_rec_null_data.txt"
     omim: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/annotation/OMIM_2020-04-09/genemap2.txt"
     gnomad: "/hpf/largeprojects/ccm_dccforge/dccdipg/Common/annotation/gnomad_v2_sv.sites.bed"
