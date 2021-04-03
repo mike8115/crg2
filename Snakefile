@@ -6,7 +6,7 @@ include: "rules/common.smk"
 
 rule all:
     input:
-        expand("report/{p}/{family}", p=["panel", "panel-flank"], family=config["run"]["project"]) if config["run"]["panel"] else [],
+        expand("report/{p}/{family}", p=["panel", "panel-flank"], family=config["run"]["project"]) if config["run"]["hpo"] else [],
         "report/coding/{family}".format(family=config["run"]["project"]),
         "report/sv",
         "qc/multiqc/multiqc.html",
@@ -14,7 +14,7 @@ rule all:
         #"plots/allele-freqs.svg"
         "programs-{}.txt".format(PIPELINE_VERSION)
 
-localrules: write_version
+localrules: write_version, hpo_to_panel
 rule write_version:
     output: "programs-{}.txt".format(PIPELINE_VERSION)
     params: config["tools"]["crg2"]
