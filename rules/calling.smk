@@ -12,7 +12,7 @@ if "restrict-regions" in config["processing"]:
 
 def get_decoy_removed_sample_bams(wildcards):
     """Get all aligned reads of given sample."""
-    return expand("decoy_rm/{family}-{sample}.no_decoy_reads.bam",
+    return expand("decoy_rm/{family}_{sample}.no_decoy_reads.bam",
                   sample=wildcards.sample,
                   family=wildcards.family)
 
